@@ -21,7 +21,7 @@ suite('Functional Tests', function() {
       test('New Thread',done=>{
         chai.request(server)
         .post('/api/threads/test')
-        .query({text: 'Test thread',delete_password:'testPassword'})
+        .send({text: 'Test thread',delete_password:'testPassword'})
         .end(function(err, res){
             console.log(res);
           done();
