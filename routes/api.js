@@ -30,7 +30,12 @@ module.exports = function (app) {
 
   
   app.route('/api/threads/:board').post((req,res)=>{
-    console.log(req.body);
+    //find the board in the database
+    boardsCollection.findOne({name:req.params.board}).then(board=>{
+      //insert a new thread into the threads collection
+      threadsCollection.insert({text,delete_password,created_on:new Date(), bumped_on:new Date(),reported:false,replies:[]})
+      .catch(err=>res.status(400).json({error:err}))
+    }).catch(err=>res.status(400).json({error:err}));
   });
     
   app.route('/api/replies/:board');
