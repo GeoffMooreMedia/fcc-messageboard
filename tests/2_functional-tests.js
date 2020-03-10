@@ -10,6 +10,7 @@ var chaiHttp = require('chai-http');
 var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
+const expect = chai.expect;
 
 chai.use(chaiHttp);
 
@@ -24,6 +25,9 @@ suite('Functional Tests', function() {
         .send({text: 'Test thread',delete_password:'testPassword'})
         .end(function(err, res){
             assert.isNull(err);
+            //check for redirect
+            expect(res).to.redirect;
+
           done();
         });
       })

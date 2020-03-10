@@ -1,7 +1,7 @@
 dependencies:
   body-parser: 1.19.0
   chai: 4.2.0
-  chai-http: 3.0.0
+  chai-http: 4.3.0
   cors: 2.8.5
   express: 4.17.1
   helmet: 3.21.3
@@ -9,6 +9,25 @@ dependencies:
   mongodb: 3.5.4
   zombie: 5.0.8
 packages:
+  /@types/chai/4.2.10:
+    dev: false
+    resolution:
+      integrity: sha512-TlWWgb21+0LdkuFqEqfmy7NEgfB/7Jjux15fWQAh3P93gbmXuwTM/vxEdzW89APIcI2BgKR48yjeAkdeH+4qvQ==
+  /@types/cookiejar/2.1.1:
+    dev: false
+    resolution:
+      integrity: sha512-aRnpPa7ysx3aNW60hTiCtLHlQaIFsXFCgQlpakNgDNVFzbtusSY8PwjAQgRWfSk0ekNoBjO51eQRB6upA9uuyw==
+  /@types/node/13.9.0:
+    dev: false
+    resolution:
+      integrity: sha512-0ARSQootUG1RljH2HncpsY2TJBfGQIKOOi7kxzUY6z54ePu/ZD+wJA8zI2Q6v8rol2qpG/rvqsReco8zNMPvhQ==
+  /@types/superagent/3.8.7:
+    dependencies:
+      '@types/cookiejar': 2.1.1
+      '@types/node': 13.9.0
+    dev: false
+    resolution:
+      integrity: sha512-9KhCkyXv268A2nZ1Wvu7rQWM+BmdYUVkycFeNnYrUL5Zwu7o8wPQ3wBfW59dDP+wuoxw0ww8YKgTNv8j/cgscA==
   /abab/1.0.4:
     dev: false
     resolution:
@@ -64,10 +83,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==
-  /async/1.5.2:
-    dev: false
-    resolution:
-      integrity: sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=
   /asynckit/0.4.0:
     dev: false
     resolution:
@@ -159,18 +174,20 @@ packages:
     dev: false
     resolution:
       integrity: sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
-  /chai-http/3.0.0:
+  /chai-http/4.3.0:
     dependencies:
-      cookiejar: 2.0.6
-      is-ip: 1.0.0
+      '@types/chai': 4.2.10
+      '@types/superagent': 3.8.7
+      cookiejar: 2.1.2
+      is-ip: 2.0.0
       methods: 1.1.2
       qs: 6.9.1
-      superagent: 2.3.0
+      superagent: 3.8.3
     dev: false
     engines:
-      node: '>= 0.6.0'
+      node: '>=4'
     resolution:
-      integrity: sha1-VGDYA24fGhKwtbXL1Snm3B0x60s=
+      integrity: sha512-zFTxlN7HLMv+7+SPXZdkd5wUlK+KxH6Q7bIEMiEx0FK3zuuMqL7cwICAQ0V1+yYRozBburYuxN1qZstgHpFZQg==
   /chai/4.2.0:
     dependencies:
       assertion-error: 1.1.0
@@ -242,10 +259,6 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-+Hp8fLp57wnUSt0tY0tHEXh4voZRDnoIrZPqlo3DPiI4y9lwg/jqx+1Om94/W6ZaPDOUbnjOt/99w66zk+l1Xg==
-  /cookiejar/2.0.6:
-    dev: false
-    resolution:
-      integrity: sha1-Cr81atANHFohnYjURRgEbdAmrP4=
   /cookiejar/2.1.2:
     dev: false
     resolution:
@@ -302,6 +315,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
+  /debug/3.2.6:
+    dependencies:
+      ms: 2.1.2
+    dev: false
+    resolution:
+      integrity: sha512-mel+jf7nrtEl5Pn1Qx46zARXKDpBbvzezse7p7LqINmdoIk8PYP5SySaxEmYv6TZ0JyEKA1hsCId6DIhgITtWQ==
   /deep-eql/3.0.1:
     dependencies:
       type-detect: 4.0.8
@@ -529,16 +548,6 @@ packages:
     dev: false
     resolution:
       integrity: sha1-+8cfDEGt6zf5bFd60e1C2P2sypE=
-  /form-data/1.0.0-rc4:
-    dependencies:
-      async: 1.5.2
-      combined-stream: 1.0.8
-      mime-types: 2.1.26
-    dev: false
-    engines:
-      node: '>= 0.10'
-    resolution:
-      integrity: sha1-BaxrwiIntD5EYfSIFhVUaZ1Pi14=
   /form-data/2.3.3:
     dependencies:
       asynckit: 0.4.0
@@ -549,6 +558,16 @@ packages:
       node: '>= 0.12'
     resolution:
       integrity: sha512-1lLKB2Mu3aGP1Q/2eCOx0fNbRMe7XdwktwOruhfqqd0rIJWwN4Dh+E3hrPSlDCXnSR7UtZ1N38rVXm+6+MEhJQ==
+  /form-data/2.5.1:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.26
+    dev: false
+    engines:
+      node: '>= 0.12'
+    resolution:
+      integrity: sha512-m21N3WOmEEURgk6B9GLOE4RuWOFf28Lhh9qGYeNlGq4VDXUlJy2th2slBNU8Gp8EzloYZOibZJ7t5ecIrFSjVA==
   /formidable/1.2.2:
     dev: false
     resolution:
@@ -751,26 +770,26 @@ packages:
     dev: false
     resolution:
       integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
-  /ip-regex/1.0.3:
+  /ip-regex/2.1.0:
     dev: false
     engines:
-      node: '>=0.10.0'
+      node: '>=4'
     resolution:
-      integrity: sha1-3FiQdvZZ9BnCIgOaMzFvHHOH7/0=
+      integrity: sha1-+ni/XS5pE8kRzp+BnuUUa7bYROk=
   /ipaddr.js/1.9.1:
     dev: false
     engines:
       node: '>= 0.10'
     resolution:
       integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
-  /is-ip/1.0.0:
+  /is-ip/2.0.0:
     dependencies:
-      ip-regex: 1.0.3
+      ip-regex: 2.1.0
     dev: false
     engines:
-      node: '>=0.10.0'
+      node: '>=4'
     resolution:
-      integrity: sha1-K7aVn3l8zW+f3IEnWLy8h8TFkHQ=
+      integrity: sha1-aO6gfooKCpTC0IDdZ0xzGrKkYas=
   /is-typedarray/1.0.0:
     dev: false
     resolution:
@@ -1001,6 +1020,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
+  /ms/2.1.2:
+    dev: false
+    resolution:
+      integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
   /negotiator/0.6.2:
     dev: false
     engines:
@@ -1333,13 +1356,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==
-  /superagent/2.3.0:
+  /superagent/3.8.3:
     dependencies:
       component-emitter: 1.3.0
       cookiejar: 2.1.2
-      debug: 2.6.9
+      debug: 3.2.6
       extend: 3.0.2
-      form-data: 1.0.0-rc4
+      form-data: 2.5.1
       formidable: 1.2.2
       methods: 1.1.2
       mime: 1.6.0
@@ -1347,9 +1370,9 @@ packages:
       readable-stream: 2.3.7
     dev: false
     engines:
-      node: '>= 0.10'
+      node: '>= 4.0'
     resolution:
-      integrity: sha1-cDUpoHFOV+EjlZ3e+84ZOy5Q0RU=
+      integrity: sha512-GLQtLMCoEIK4eDv6OGtkOoSMt3D+oq0y3dsxMuYuDvaNUvuT8eFBuLmfR0iYYzHC1e8hpzC6ZsxbuP6DIalMFA==
   /supports-color/3.1.2:
     dependencies:
       has-flag: 1.0.0
@@ -1530,7 +1553,7 @@ shrinkwrapVersion: 3
 specifiers:
   body-parser: ^1.15.2
   chai: ^4.2.0
-  chai-http: ^3.0.0
+  chai-http: ^4.3.0
   cors: ^2.8.1
   express: ^4.17.1
   helmet: ^3.1.0

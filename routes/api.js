@@ -33,9 +33,8 @@ module.exports = function (app) {
     //find the board in the database
     boardsCollection.findOne({name:req.params.board}).then(board=>{
       const threadObj = {text:req.body.text,delete_password:req.body.delete_password,board:board._id,created_on:new Date(), bumped_on:new Date(),reported:false,replies:[]};
-      console.log(threadObj);
       //insert a new thread into the threads collection
-      threadsCollection.insertOne(threadObj,(err,result)=>{
+      threadsCollection.insertOne(threadObj,(err)=>{
         if(err)res.status(400).json({error:err});
         else res.redirect(`/b/${req.params.board}`);
       })

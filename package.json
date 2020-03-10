@@ -15,7 +15,7 @@
     "body-parser": "^1.15.2",
     "chai": "^4.2.0",
     "mongodb": "^3.5.4",
-    "chai-http": "^3.0.0",
+    "chai-http": "^4.3.0",
     "mocha": "^3.2.0",
     "zombie": "^5.0.5",
     "helmet": "^3.1.0"
