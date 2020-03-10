@@ -13,7 +13,7 @@ var expect = require('chai').expect;
 module.exports = function (app) {
   
   app.route('/api/threads/:board').post((req,res)=>{
-    console.log(req);
+    console.log(req.query);
   });
     
   app.route('/api/replies/:board');
