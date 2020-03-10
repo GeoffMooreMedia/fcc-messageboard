@@ -23,7 +23,7 @@ suite('Functional Tests', function() {
         .post('/api/threads/test')
         .send({text: 'Test thread',delete_password:'testPassword'})
         .end(function(err, res){
-            console.log(res);
+            assert.isNull(err);
           done();
         });
       })
