@@ -80,15 +80,13 @@ module.exports = function (app) {
 
   /* Delete a thread by thread_id */
   app.route('/api/threads/:board').delete((req,res)=>{
-    //find the thread record
-    threadsCollection.findOne({_id:req.params.thread_id}).then(thread=>{
-      //get the _ids of each reply to be deleted
-      const replyIds = thread.replies.map(reply=>reply._id);
-      //delete each reply from the database
-      repliesCollection.deleteMany({_id:{$in:replyIds}}).then(()=>{
-        //get the board from the database
-      }).catch(err=>res.status(400).json({error:err}));
-    }).catch(err=>res.status(400).json({error:err}));
+    //delete the thread document
+    threadsCollection.deleteOne({_id:req.params.thread_id},(err,doc)=>{
+      if(err)res.status(400).json({error:err});
+      else{
+        console.log(doc);
+      }
+    });
   })
     
   app.route('/api/replies/:board').post((req,res)=>{

@@ -58,7 +58,7 @@ suite('Functional Tests', function() {
               assert.doesNotHaveAnyKeys(reply,['delete_password','reported']);
             })
           })
-
+          console.log(threads);
           //store the last thread for later use
           testThread = threads[0];
         })
@@ -67,7 +67,12 @@ suite('Functional Tests', function() {
     });
     
     suite('DELETE', function() {
-      
+      test('Delete a thread',done=>{
+        chai.request(server).delete('/api/threads/test').send({thread_id:testThread._id,delete_password:'testPassword'}).end((err,res)=>{
+          assert.isNull(err);
+        })
+        done();
+      })
     });
     
     suite('PUT', function() {
