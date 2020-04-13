@@ -35,7 +35,10 @@ suite('Functional Tests', function() {
     
     suite('GET', function() {
       test('Get threads',done=>{
-        done()
+        chai.request(server).get('/api/threads/test').send().end((err,res)=>{
+          assert.isNull(err);
+        })
+        done();
       })
     });
     

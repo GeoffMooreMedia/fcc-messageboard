@@ -49,6 +49,7 @@ module.exports = function (app) {
   app.route('/api/threads/:board').get((req,res)=>{
     //get the board from the database
     boardsCollection.findOne({name:req.params.board}).then(board=>{
+      
       //find the threads for this board
       threadsCollection.find({_id:{$in:board.threads}}).then(threads=>{
         console.log(threads);
