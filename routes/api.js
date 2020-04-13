@@ -15,20 +15,35 @@ const MONGODB_CONNECTION_STRING = process.env.DB;
 
 module.exports = function (app) {
   let boardsCollection;
+  let repliesCollection;
+  let threadsCollection;
   
   //initialize the database connection
   const client = new MongoClient(MONGODB_CONNECTION_STRING, { useNewUrlParser: true });
   client.connect(err => {
     if(err) throw err;
     boardsCollection = client.db("messageboard").collection("boards");
+    repliesCollection = client.db("messageboard").collection("replies");
+    threadsCollection = client.db("messageboard").collection("threads");
     console.log('DB Connected');
   });
 
   
   app.route('/api/threads/:board').post((req,res)=>{
+    //initialize the thread object
     const threadObj = {text:req.body.text,delete_password:req.body.delete_password,created_on:new Date(), bumped_on:new Date(),reported:false,replies:[]};
-    boardsCollection.updateOne({name:req.params.board},{$push:{threads:threadObj}},{upsert:true}).then(()=>{
-      res.redirect(`/b/${req.params.board}`);
+    //create a thread in the threads collection
+    threadsCollection.insertOne(threadObj).then(thread=>{
+      //update the threads array in the board record
+      boardsCollection.updateOne(
+        {name:req.params.board},
+        //add the threads _id to the boards threads array
+        {$push:{threads:thread._id}},
+        //create the board if it doesn't exist yet
+        {upsert:true}
+      ).then(()=>{
+        res.redirect(`/b/${req.params.board}`);
+      }).catch(res.stat)
     }).catch(err=>res.status(400).json({error:err}));
   });
     

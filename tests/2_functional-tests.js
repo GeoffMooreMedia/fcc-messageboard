@@ -22,7 +22,7 @@ suite('Functional Tests', function() {
       test('New Thread',done=>{
         chai.request(server)
         .post('/api/threads/test')
-        .send({text: `Test thread${new Date().toString()}`,delete_password:'testPassword'})
+        .send({text: `Test thread ${new Date().toString()}`,delete_password:'testPassword'})
         .end(function(err, res){
             assert.isNull(err);
             //check for redirect
