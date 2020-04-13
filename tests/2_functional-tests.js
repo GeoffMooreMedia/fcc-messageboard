@@ -58,11 +58,11 @@ suite('Functional Tests', function() {
               assert.doesNotHaveAnyKeys(reply,['delete_password','reported']);
             })
           })
-          console.log(threads);
           //store the last thread for later use
           testThread = threads[0];
+          done();
         })
-        done();
+        
       })
     });
     

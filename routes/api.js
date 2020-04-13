@@ -80,13 +80,27 @@ module.exports = function (app) {
 
   /* Delete a thread by thread_id */
   app.route('/api/threads/:board').delete((req,res)=>{
-    //delete the thread document
-    threadsCollection.deleteOne({_id:req.params.thread_id},(err,doc)=>{
-      if(err)res.status(400).json({error:err});
-      else{
-        console.log(doc);
-      }
-    });
+    //delete the thread document if password matches
+    threadsCollection.findOne({_id:req.body.thread_id, delete_password:req.body.delete_password}).then(thread=>{
+      //array of promises to delete thread, replies, and board reference
+      const promiseArr = [
+        //delete the replies
+        new Promise((resolve, reject)=>{
+          //get the _ids of each reply to be deleted
+          const replyIds = thread.replies.map(reply=>reply._id);
+          //delete each reply from the database
+          repliesCollection.deleteMany({_id:{$in:replyIds}}).then(()=>{
+            resolve();
+          }).catch(err=>reject(err));
+        }),
+        //update the board document
+        new Promise((resolve,))
+      ]
+      //when everything has been deleted
+      Promise.all(promiseArr).then(()=>{
+        res.status(200).send('success');
+      })
+    }).catch(err=>res.status(403).send('incorrect password'));
   })
     
   app.route('/api/replies/:board').post((req,res)=>{
