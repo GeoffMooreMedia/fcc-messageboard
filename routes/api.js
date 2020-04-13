@@ -48,9 +48,12 @@ module.exports = function (app) {
   });
     
   app.route('/api/replies/:board').post((req,res)=>{
-    //find the thread in the database
-    boardsCollection.findOne({name:req.params.board}).then(board=>{
-      
+    //find the thread in the database to make sure it exists
+    threadsCollection.findOne({_id:req.body.thread_id}).then(thread=>{
+      //create the reply object
+      const replyObj = {text:req.body.text,delete_password:req.body.delete_password,thread_id:req.body.thread_id, created_on:new Date()};
+      //add the new reply record
+      repliesCollection.insertOne()
     }).catch(err=>res.status(400).json({error:err}));
   });
 
