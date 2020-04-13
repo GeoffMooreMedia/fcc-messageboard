@@ -51,9 +51,13 @@ module.exports = function (app) {
     boardsCollection.findOne({name:req.params.board}).then(board=>{
       
       //find the threads for this board
-      threadsCollection.find({_id:{$in:board.threads}}).then(threads=>{
-        console.log(threads);
-      }).catch(err=>res.status(400).json({error:err}));
+      threadsCollection.find({_id:{$in:board.threads}},{delete_password:0,reported:0}).sort({bumped_on:-1}).limit(10).toArray((err,threads)=>{
+        //if there was an error
+        if(err)res.status(400).json({error:err});
+        else{
+          console.log(threads);
+        }
+      })
     }).catch(err=>res.status(400).json({error:err}));
   })
     
