@@ -70,11 +70,13 @@ suite('Functional Tests', function() {
     
     suite('DELETE', function() {
       test('Try to delete with a bad password',done=>{
-        chai.request(server).delete('/api/threads/test'.send({thread_id:testThread._id,delete_password:'badPassword'}).end((err,res)=>{
-          //should throw a 403
+        chai.request(server).delete('/api/threads/test').send({thread_id:testThread._id,delete_password:'badPassword'}).end((err,res)=>{
+          //should throw a 403, unauthorized, status
           assert.equal(res.status,403);
-        }))
-        done()
+          //should show incorrect password message
+          assert.equal(res.text,'incorrect password');
+        })
+        done();
       })
       test('Delete a thread',done=>{
         
@@ -83,6 +85,7 @@ suite('Functional Tests', function() {
           assert.isNull(err);
           //response should be OK
           assert.isOk(res);
+          //TODO: Finish implementation
         })
         done();
       })
