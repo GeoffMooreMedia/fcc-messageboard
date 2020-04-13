@@ -51,11 +51,15 @@ module.exports = function (app) {
     boardsCollection.findOne({name:req.params.board}).then(board=>{
       
       //find the threads for this board
-      threadsCollection.find({_id:{$in:board.threads}},{delete_password:0,reported:0}).sort({bumped_on:-1}).limit(10).toArray((err,threads)=>{
+      threadsCollection.find({_id:{$in:board.threads}}).project({delete_password:0,reported:0}).sort({bumped_on:-1}).limit(10).toArray((err,threads)=>{
         //if there was an error
         if(err)res.status(400).json({error:err});
         else{
-          console.log(threads);
+          /* Process the replies */
+          //loop through the threads
+          threads.forEach(thread=>{
+            console.log(thread);
+          })
         }
       })
     }).catch(err=>res.status(400).json({error:err}));
