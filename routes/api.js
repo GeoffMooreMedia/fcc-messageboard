@@ -46,6 +46,8 @@ module.exports = function (app) {
       }).catch(err=>res.status(400).json({error:err}));
     }).catch(err=>res.status(400).json({error:err}));
   });
+
+  /* Get all threads for a board */
   app.route('/api/threads/:board').get((req,res)=>{
     //get the board from the database
     boardsCollection.findOne({name:req.params.board}).then(board=>{
@@ -73,6 +75,14 @@ module.exports = function (app) {
           res.status(200).json(threads);
         }
       })
+    }).catch(err=>res.status(400).json({error:err}));
+  })
+
+  /* Delete a thread by thread_id */
+  app.route('/api/threads/:board').delete((req,res)=>{
+    //find the thread record
+    threadsCollection.findOne({_id:req.params.thread_id}).then(thread=>{
+      //delete each 
     }).catch(err=>res.status(400).json({error:err}));
   })
     

@@ -11,6 +11,7 @@ var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
 const expect = chai.expect;
+let testThread;
 
 chai.use(chaiHttp);
 
@@ -40,6 +41,8 @@ suite('Functional Tests', function() {
           assert.isNull(err);
           //store the threads for easy access
           const threads = res.body;
+          //threads should be an array
+          assert.isArray(threads);
           //make sure there are only ten records returned 
           assert.isAtMost(threads.length,10);
           
@@ -55,6 +58,9 @@ suite('Functional Tests', function() {
               assert.doesNotHaveAnyKeys(reply,['delete_password','reported']);
             })
           })
+
+          //store the last thread for later use
+          testThread = threads[0];
         })
         done();
       })
