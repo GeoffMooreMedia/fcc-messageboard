@@ -81,7 +81,7 @@ module.exports = function (app) {
   /* Delete a thread by thread_id */
   app.route('/api/threads/:board').delete((req,res)=>{
     //delete the thread document if password matches
-    threadsCollection.findOne({_id:req.body.thread_id, delete_password:req.body.delete_password}).then(thread=>{
+    threadsCollection.findOne({_id:new ObjectId(req.body.thread_id), delete_password:req.body.delete_password}).then(thread=>{
       //array of promises to delete thread, replies, and board reference
       const promiseArr = [
         //delete the replies
@@ -94,7 +94,14 @@ module.exports = function (app) {
           }).catch(err=>reject(err));
         }),
         //update the board document
-        new Promise((resolve,))
+        new Promise((resolve,reject)=>{
+          //remove the thread from the board document
+          boardsCollection.updateOne({name:req.params.board},{$pull:{threads:req.body.thread_id}}).then(()=>resolve()).catch(err=>reject(err));
+        }),
+        //remove the thread document
+        new Promise((resolve,reject)=>{
+          threadsCollection.deleteOne({_id:req.body.thread_id}).then(()=>resolve()).catch(err=>reject(err));
+        })
       ]
       //when everything has been deleted
       Promise.all(promiseArr).then(()=>{

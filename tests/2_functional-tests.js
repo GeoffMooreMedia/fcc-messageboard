@@ -39,6 +39,8 @@ suite('Functional Tests', function() {
         chai.request(server).get('/api/threads/test').send().end((err,res)=>{
           
           assert.isNull(err);
+          //response should be OK
+          assert.isOk(res);
           //store the threads for easy access
           const threads = res.body;
           //threads should be an array
@@ -67,12 +69,24 @@ suite('Functional Tests', function() {
     });
     
     suite('DELETE', function() {
+      test('Try to delete with a bad password',done=>{
+        chai.request(server).delete('/api/threads/test'.send({thread_id:testThread._id,delete_password:'badPassword'}).end((err,res)=>{
+          //should throw a 403
+          assert.equal(res.status,403);
+        }))
+        done()
+      })
       test('Delete a thread',done=>{
+        
         chai.request(server).delete('/api/threads/test').send({thread_id:testThread._id,delete_password:'testPassword'}).end((err,res)=>{
+          //should be no error
           assert.isNull(err);
+          //response should be OK
+          assert.isOk(res);
         })
         done();
       })
+      
     });
     
     suite('PUT', function() {
