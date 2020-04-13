@@ -34,7 +34,9 @@ suite('Functional Tests', function() {
     }); 
     
     suite('GET', function() {
-      
+      test('Get threads',done=>{
+        done()
+      })
     });
     
     suite('DELETE', function() {

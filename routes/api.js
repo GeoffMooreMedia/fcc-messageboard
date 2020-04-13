@@ -46,7 +46,15 @@ module.exports = function (app) {
       }).catch(err=>res.status(400).json({error:err}));
     }).catch(err=>res.status(400).json({error:err}));
   });
-  app.route('/')
+  app.route('/api/threads/:board').get((req,res)=>{
+    //get the board from the database
+    boardsCollection.findOne({name:req.params.board}).then(board=>{
+      //find the threads for this board
+      threadsCollection.find({_id:{$in:board.threads}}).then(threads=>{
+        console.log(threads);
+      }).catch(err=>res.status(400).json({error:err}));
+    }).catch(err=>res.status(400).json({error:err}));
+  })
     
   app.route('/api/replies/:board').post((req,res)=>{
     //find the thread in the database to make sure it exists
