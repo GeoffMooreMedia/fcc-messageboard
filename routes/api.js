@@ -58,7 +58,10 @@ module.exports = function (app) {
           /* Process the replies */
           //loop through the threads
           threads.forEach(thread=>{
-            console.log(thread);
+            //sort the replies by date created
+            thread.replies.sort((a,b)=> b.created_on-a.created_on);
+            //we only need the first three
+            thread.replies = thread.replies.slice(0,3);
           })
         }
       })
