@@ -51,9 +51,16 @@ module.exports = function (app) {
     //find the thread in the database to make sure it exists
     threadsCollection.findOne({_id:req.body.thread_id}).then(thread=>{
       //create the reply object
-      const replyObj = {text:req.body.text,delete_password:req.body.delete_password,thread_id:req.body.thread_id, created_on:new Date()};
+      let replyObj = {text:req.body.text,delete_password:req.body.delete_password,thread_id:req.body.thread_id, created_on:new Date(),reported:false};
       //add the new reply record
-      repliesCollection.insertOne()
+      repliesCollection.insertOne(replyObj).then(reply=>{
+        //add the _id to the replyObj
+        replyObj._id = reply.insertedId;
+        //remove the thread_id
+        delete replyObj.thread_id;
+        //add to the thread's replies array
+        threadsCollection.updateOne({_id:req.body.thread_id},{$push:{replies:replyObj}}).then(()=>res.redirect(`/b/${req.params.board}/${req.body.thread_id}`)).catch(err=>res.status(400).json({error:err}));
+      }).catch(err=>res.status(400).json({error:err}));
     }).catch(err=>res.status(400).json({error:err}));
   });
 
