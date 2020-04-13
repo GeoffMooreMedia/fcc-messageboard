@@ -42,7 +42,19 @@ suite('Functional Tests', function() {
           const threads = res.body;
           //make sure there are only ten records returned 
           assert.isAtMost(threads.length,10);
-          //make sure there are only 
+          
+          //check the replies of each thread
+          threads.forEach(thread=>{
+            //check for the delete_password and reported keys
+            assert.doesNotHaveAnyKeys(thread,['delete_password','reported']);
+            //should be no more than three
+            assert.isAtMost(thread.replies.length,3);
+            //check each reply
+            thread.replies.forEach(reply=>{
+              //check for delete_password and reported keys
+              assert.doesNotHaveAnyKeys(reply,['delete_password','reported']);
+            })
+          })
         })
         done();
       })
