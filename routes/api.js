@@ -82,7 +82,12 @@ module.exports = function (app) {
   app.route('/api/threads/:board').delete((req,res)=>{
     //find the thread record
     threadsCollection.findOne({_id:req.params.thread_id}).then(thread=>{
-      //delete each 
+      //get the _ids of each reply to be deleted
+      const replyIds = thread.replies.map(reply=>reply._id);
+      //delete each reply from the database
+      repliesCollection.deleteMany({_id:{$in:replyIds}}).then(()=>{
+        //get the board from the database
+      }).catch(err=>res.status(400).json({error:err}));
     }).catch(err=>res.status(400).json({error:err}));
   })
     
