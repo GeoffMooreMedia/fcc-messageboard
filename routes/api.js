@@ -38,12 +38,12 @@ module.exports = function (app) {
       boardsCollection.updateOne(
         {name:req.params.board},
         //add the threads _id to the boards threads array
-        {$push:{threads:thread._id}},
+        {$push:{threads:thread.insertedId}},
         //create the board if it doesn't exist yet
         {upsert:true}
       ).then(()=>{
         res.redirect(`/b/${req.params.board}`);
-      }).catch(res.stat)
+      }).catch(err=>res.status(400).json({error:err}));
     }).catch(err=>res.status(400).json({error:err}));
   });
     
