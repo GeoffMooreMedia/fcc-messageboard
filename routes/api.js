@@ -41,6 +41,11 @@ module.exports = function (app) {
     }).catch(err=>res.status(400).json({error:err}));
   });
     
-  app.route('/api/replies/:board');
+  app.route('/api/replies/:board').post((req,res)=>{
+    //find the board in the database
+    boardsCollection.findOne({name:req.params.board}).then(board=>{
+      
+    }).catch(err=>res.status(400).json({error:err}));
+  });
 
 };
