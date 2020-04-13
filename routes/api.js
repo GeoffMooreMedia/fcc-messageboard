@@ -46,6 +46,7 @@ module.exports = function (app) {
       }).catch(err=>res.status(400).json({error:err}));
     }).catch(err=>res.status(400).json({error:err}));
   });
+  app.route('/')
     
   app.route('/api/replies/:board').post((req,res)=>{
     //find the thread in the database to make sure it exists
@@ -59,7 +60,7 @@ module.exports = function (app) {
         //remove the thread_id
         delete replyObj.thread_id;
         //add to the thread's replies array
-        threadsCollection.updateOne({_id:req.body.thread_id},{$push:{replies:replyObj}}).then(()=>res.redirect(`/b/${req.params.board}/${req.body.thread_id}`)).catch(err=>res.status(400).json({error:err}));
+        threadsCollection.updateOne({_id:req.body.thread_id},{$push:{replies:replyObj},$set:{bumped_on:replyObj.created_on}}).then(()=>res.redirect(`/b/${req.params.board}/${req.body.thread_id}`)).catch(err=>res.status(400).json({error:err}));
       }).catch(err=>res.status(400).json({error:err}));
     }).catch(err=>res.status(400).json({error:err}));
   });
