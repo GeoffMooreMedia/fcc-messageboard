@@ -36,7 +36,13 @@ suite('Functional Tests', function() {
     suite('GET', function() {
       test('Get threads',done=>{
         chai.request(server).get('/api/threads/test').send().end((err,res)=>{
+          
           assert.isNull(err);
+          //store the threads for easy access
+          const threads = res.body;
+          //make sure there are only ten records returned 
+          assert.isAtMost(threads.length,10);
+          //make sure there are only 
         })
         done();
       })

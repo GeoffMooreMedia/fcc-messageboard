@@ -62,7 +62,15 @@ module.exports = function (app) {
             thread.replies.sort((a,b)=> b.created_on-a.created_on);
             //we only need the first three
             thread.replies = thread.replies.slice(0,3);
+            //get rid of the delete_password and reported fields
+            thread.replies.forEach(reply=>{
+              delete reply.delete_password;
+              delete reply.reported;
+            })
           })
+
+          //return the threads
+          res.status(200).json(threads);
         }
       })
     }).catch(err=>res.status(400).json({error:err}));
