@@ -13,6 +13,7 @@ var server = require('../server');
 const expect = chai.expect;
 let testThread1;
 let testThread2;//need 2 because we need to delete one and we cant change order
+let testReply;
 
 chai.use(chaiHttp);
 
@@ -41,7 +42,7 @@ suite('Functional Tests', function() {
           
           assert.isNull(err);
           //response should be OK
-          assert.isOk(res);
+          assert.equal(res.status,200)
           //store the threads for easy access
           const threads = res.body;
           //threads should be an array
@@ -87,7 +88,7 @@ suite('Functional Tests', function() {
           //should be no error
           assert.isNull(err);
           //response should be OK
-          assert.isOk(res);
+          assert.equal(res.status,200)
           //should report success
           assert.equal(res.text,'success');
           done();
@@ -103,7 +104,7 @@ suite('Functional Tests', function() {
           //should be no error
           assert.isNull(err);
           //response should be OK
-          assert.isOk(res);
+          assert.equal(res.status,200)
           //should report success
           assert.equal(res.text,'success');
           done();
@@ -134,7 +135,7 @@ suite('Functional Tests', function() {
           //should not be an error
           assert.isNull(err);
           //should be ok
-          assert.isOk(res);
+          assert.equal(res.status,200);
           //store thread for easy access
           const thread = res.body;
 
@@ -151,6 +152,7 @@ suite('Functional Tests', function() {
             //should have all the required keys
             assert.hasAllKeys(reply,['text','created_on','_id']);
           })
+          testReply = thread.replies[0];
           
           done();
         })
@@ -158,7 +160,16 @@ suite('Functional Tests', function() {
     });
     
     suite('PUT', function() {
-      
+      test('Report a reply on a thread',done=>{
+        chai.request(server).put('/api/replies/test').send({thread_id:testThread2._id, reply_id:testReply._id}).end((err,res)=>{
+          //should not have an error
+          assert.isNull(err);
+          assert.equal(res.status,200);
+          //response text should be success
+          assert.equal(res.text,'success');
+          done();
+        })
+      })
     });
     
     suite('DELETE', function() {

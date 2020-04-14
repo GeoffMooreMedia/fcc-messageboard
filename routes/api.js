@@ -119,7 +119,6 @@ module.exports = function (app) {
 
   /* Report a thread */
   app.route('/api/threads/:board').put((req,res)=>{
-    console.log(req.body.thread_id);
     //update the thread
     threadsCollection.updateOne({_id:new ObjectId(req.body.thread_id)},{$set:{reported:true}}).then(()=>res.status(200).send('success')).catch(err=>res.status(400).json({error:err}));
   })
@@ -158,7 +157,10 @@ module.exports = function (app) {
       threadsCollection.findOne({_id:new ObjectId(req.body.thread_id)}).then(thread=>{
         //find the index of the reply in the replies array
         const replyIndex = thread.replies.findIndex(reply=>reply._id===req.body.reply_id);
-        
+        //update the thread replies
+        thread.replies[replyIndex].reported = true;
+        //save the updated document to the database
+        threadsCollection.updateOne({_id:new ObjectId(req.body.thread_id)},{$set:{replies:thread.replies}}).then(()=>res.status(200).send('success')).catch(err=>res.status(400).json({error:err}));
       }).catch(err=>res.status(400).json({error:err}));
 
     }).catch(err=>res.status(400).json({error:err}))
