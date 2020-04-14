@@ -157,14 +157,7 @@ module.exports = function (app) {
       //get the thread document
       threadsCollection.findOne({_id:new ObjectId(req.body.thread_id)}).then(thread=>{
         //find the index of the reply in the replies array
-        let replyIndex = -1;
-        for(let i = 0; i < thread.replies.length; i++){
-          //if the reply's id matches
-          if(threads.replies[i]._id===req.body.reply_id){
-            replyIndex = i;
-          }
-        }
-        console.log(replyIndex);
+        const replyIndex = thread.replies.findIndex(reply=>reply._id==req.body.reply_id);
         //update the thread replies
         thread.replies[replyIndex].reported = true;
         //save the updated document to the database
@@ -172,5 +165,13 @@ module.exports = function (app) {
       }).catch(err=>res.status(400).json({error:err}));
 
     }).catch(err=>res.status(400).json({error:err}))
+  })
+
+  /* Delete a reply */
+  app.route('/api/replies/:board').delete((req,res)=>{
+    //delete the reply in the database
+    repliesCollection.findOne({_id:req.body.reply_id,delete_password:req.body.delete_password}).then(delt=>{
+
+    }).catch(err=>res.status(400).json({error:err}));
   })
 };
