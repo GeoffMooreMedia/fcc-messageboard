@@ -137,18 +137,19 @@ suite('Functional Tests', function() {
           assert.isOk(res);
           //store thread for easy access
           const thread = res.body;
-          
+
           //should not return reported or delete_password fields
           assert.doesNotHaveAnyKeys(thread,['delete_password','reported']);
+          //should have all the required keys
+          assert.hasAllKeys(thread,['text','created_on','bumped_on','replies','_id']);
           //replies should be an array
           assert.isArray(thread.replies);
           //check each reply
           thread.replies.forEach(reply=>{
-            console.log(reply);
             //replies should not have delete_password or reported either
             assert.doesNotHaveAnyKeys(reply,['delete_password','reported']);
             //should have all the required keys
-            assert.hasAllKeys(reply,['text']);
+            assert.hasAllKeys(reply,['text','created_on','_id']);
           })
           
           done();
