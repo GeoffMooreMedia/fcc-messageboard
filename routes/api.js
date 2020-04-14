@@ -116,7 +116,14 @@ module.exports = function (app) {
       
     }).catch(err=>res.status(400).json({error:err}));
   })
-    
+
+  /* Report a thread */
+  app.route('/api/threads/:board').put((req,res)=>{
+    //update the thread
+    threadsCollection.updateOne({_id:req.body.thread_id})
+  })
+  
+  /* post a new reply to a thread */
   app.route('/api/replies/:board').post((req,res)=>{
     //find the thread in the database to make sure it exists
     threadsCollection.findOne({_id:req.body.thread_id}).then(thread=>{

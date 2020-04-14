@@ -85,7 +85,8 @@ suite('Functional Tests', function() {
           assert.isNull(err);
           //response should be OK
           assert.isOk(res);
-          //TODO: Finish implementation
+          //should report success
+          assert.equal(res.text,'success');
         })
         done();
       })
