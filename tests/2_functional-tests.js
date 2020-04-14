@@ -137,7 +137,14 @@ suite('Functional Tests', function() {
           assert.isOk(res);
           //store thread for easy access
           const thread = res.body;
-          //store thread for easy access
+          //replies should be an array
+          assert.isArray(thread.replies);
+          //should not return reported or delete_password fields
+          assert.notProperty(thread,'delete_password');
+          assert.notProperty(thread,'reported');
+          //replies should not have delete_password or reported either
+          assert.notProperty(thread.replies[0],'delete_password');
+          assert.notProperty(thread.replies[0],'reported');
           done();
         })
       })
