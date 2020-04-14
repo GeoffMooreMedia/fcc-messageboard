@@ -120,7 +120,7 @@ module.exports = function (app) {
   /* Report a thread */
   app.route('/api/threads/:board').put((req,res)=>{
     //update the thread
-    threadsCollection.updateOne({_id:req.body.thread_id})
+    threadsCollection.updateOne({_id:req.body.thread_id},{$set:{reported:true}}).then(()=>res.status(200).send('success')).catch(err=>res.status(400).json({error:err}));
   })
   
   /* post a new reply to a thread */

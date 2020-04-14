@@ -11,7 +11,8 @@ var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
 const expect = chai.expect;
-let testThread;
+let testThread1;
+let testThread2;//need 2 because we need to delete one and we cant change order
 
 chai.use(chaiHttp);
 
@@ -61,7 +62,8 @@ suite('Functional Tests', function() {
             })
           })
           //store the last thread for later use
-          testThread = threads[0];
+          testThread1 = threads[0];
+          testThread2 = threads[1];
           done();
         })
         
@@ -70,31 +72,43 @@ suite('Functional Tests', function() {
     
     suite('DELETE', function() {
       test('Try to delete with a bad password',done=>{
-        chai.request(server).delete('/api/threads/test').send({thread_id:testThread._id,delete_password:'badPassword'}).end((err,res)=>{
+        chai.request(server).delete('/api/threads/test').send({thread_id:testThread1._id,delete_password:'badPassword'}).end((err,res)=>{
           //should throw a 403, unauthorized, status
           assert.equal(res.status,403);
           //should show incorrect password message
           assert.equal(res.text,'incorrect password');
+          done();
         })
-        done();
+        
       })
       test('Delete a thread',done=>{
         
-        chai.request(server).delete('/api/threads/test').send({thread_id:testThread._id,delete_password:'testPassword'}).end((err,res)=>{
+        chai.request(server).delete('/api/threads/test').send({thread_id:testThread1._id,delete_password:'testPassword'}).end((err,res)=>{
           //should be no error
           assert.isNull(err);
           //response should be OK
           assert.isOk(res);
           //should report success
           assert.equal(res.text,'success');
+          done();
         })
-        done();
+        
       })
       
     });
     
     suite('PUT', function() {
-      
+      test('Report a thread',done=>{
+        chai.request(server).put('/api/threads/test').send({thread_id:testThread2._id}).end((err,res)=>{
+          //should be no error
+          assert.isNull(err);
+          //response should be OK
+          assert.isOk(res);
+          //should report success
+          assert.equal(res.text,'success');
+          done();
+        })
+      })
     });
     
 
