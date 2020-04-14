@@ -157,7 +157,14 @@ module.exports = function (app) {
       //get the thread document
       threadsCollection.findOne({_id:new ObjectId(req.body.thread_id)}).then(thread=>{
         //find the index of the reply in the replies array
-        const replyIndex =/*  thread.replies.findIndex(reply=>reply._id===req.body.reply_id) */0;
+        let replyIndex = -1;
+        for(let i = 0; i < thread.replies.length; i++){
+          //if the reply's id matches
+          if(threads.replies[i]._id===req.body.reply_id){
+            replyIndex = i;
+          }
+        }
+        console.log(replyIndex);
         //update the thread replies
         thread.replies[replyIndex].reported = true;
         //save the updated document to the database
