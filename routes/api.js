@@ -127,9 +127,9 @@ module.exports = function (app) {
   /* post a new reply to a thread */
   app.route('/api/replies/:board').post((req,res)=>{
     //find the thread in the database to make sure it exists
-    threadsCollection.findOne({_id:req.body.thread_id}).then(thread=>{
+    threadsCollection.findOne({_id:new ObjectId(req.body.thread_id)}).then(thread=>{
       //create the reply object
-      let replyObj = {text:req.body.text,delete_password:req.body.delete_password,thread_id:req.body.thread_id, created_on:new Date(),reported:false};
+      let replyObj = {text:req.body.text,delete_password:req.body.delete_password,thread_id:thread._id, created_on:new Date(),reported:false};
       //add the new reply record
       repliesCollection.insertOne(replyObj).then(reply=>{
         //add the _id to the replyObj
@@ -137,16 +137,17 @@ module.exports = function (app) {
         //remove the thread_id
         delete replyObj.thread_id;
         //add to the thread's replies array
-        threadsCollection.updateOne({_id:req.body.thread_id},{$push:{replies:replyObj},$set:{bumped_on:replyObj.created_on}}).then(()=>res.redirect(`/b/${req.params.board}/${req.body.thread_id}`)).catch(err=>res.status(400).json({error:err}));
+        threadsCollection.updateOne({_id:new ObjectId(req.body.thread_id)},{$push:{replies:replyObj},$set:{bumped_on:replyObj.created_on}}).then(()=>res.redirect(`/b/${req.params.board}/${req.body.thread_id}`)).catch(err=>res.status(400).json({error:err}));
       }).catch(err=>res.status(400).json({error:err}));
     }).catch(err=>res.status(400).json({error:err}));
   });
 
   /* Get a thread and all replies */
   app.route('/api/replies/:board').get((req,res)=>{
-    //store thread ID for easy access
-    const thread_id = req.query.thread_id;
-    //fet
+    //fetch the thread from the database
+    threadsCollection.findOne({_id:new ObjectId(req.query.thread_id)},{projection:{delete_password:0, reported:0,'replies.delete_password':0, 'replies.reported':0}}).then(thread=>{
+      res.status(200).json(thread);
+    }).catch(err=>res.status(400).json({error:err}));
   })
 
 };

@@ -129,7 +129,18 @@ suite('Functional Tests', function() {
     });
     
     suite('GET', function() {
-      
+      test('Get a thread and all replies from thread_id',done=>{
+        chai.request(server).get(`/api/replies/test?thread_id=${testThread2._id}`).send().end((err,res)=>{
+          //should not be an error
+          assert.isNull(err);
+          //should be ok
+          assert.isOk(res);
+          //store thread for easy access
+          const thread = res.body;
+          //store thread for easy access
+          done();
+        })
+      })
     });
     
     suite('PUT', function() {
