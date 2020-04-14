@@ -142,4 +142,11 @@ module.exports = function (app) {
     }).catch(err=>res.status(400).json({error:err}));
   });
 
+  /* Get a thread and all replies */
+  app.route('/api/replies/:board').get((req,res)=>{
+    //store thread ID for easy access
+    const thread_id = req.query.thread_id;
+    //fet
+  })
+
 };

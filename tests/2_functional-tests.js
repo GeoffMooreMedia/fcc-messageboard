@@ -62,8 +62,8 @@ suite('Functional Tests', function() {
             })
           })
           //store the last thread for later use
-          testThread1 = threads[0];
-          testThread2 = threads[1];
+          testThread1 = threads[1];
+          testThread2 = threads[0];
           done();
         })
         
