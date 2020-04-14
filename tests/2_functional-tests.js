@@ -117,7 +117,15 @@ suite('Functional Tests', function() {
   suite('API ROUTING FOR /api/replies/:board', function() {
     
     suite('POST', function() {
-      
+      test('Post a new reply to a thread',done=>{
+        chai.request(server).post('/api/replies/test').send({text:`Test reply ${new Date().toString()}`,thread_id:testThread2._id,delete_password:'testPassword'}).end((err,res)=>{
+          //should be no error
+          assert.isNull(err);
+          //should redirect
+          expect(res).to.redirect;
+          done();
+        })
+      })
     });
     
     suite('GET', function() {
