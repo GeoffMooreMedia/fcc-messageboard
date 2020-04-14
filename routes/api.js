@@ -151,12 +151,13 @@ module.exports = function (app) {
 
   /* Report a reply */
   app.route('/api/replies/:board').put((req,res)=>{
+    
     //report the reply in the replies collection
     repliesCollection.updateOne({_id:new ObjectId(req.body.reply_id)},{$set:{reported:true}}).then(()=>{
       //get the thread document
       threadsCollection.findOne({_id:new ObjectId(req.body.thread_id)}).then(thread=>{
         //find the index of the reply in the replies array
-        const replyIndex = thread.replies.findIndex(reply=>reply._id===req.body.reply_id);
+        const replyIndex =/*  thread.replies.findIndex(reply=>reply._id===req.body.reply_id) */0;
         //update the thread replies
         thread.replies[replyIndex].reported = true;
         //save the updated document to the database
