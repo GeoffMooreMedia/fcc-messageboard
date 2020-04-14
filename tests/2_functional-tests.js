@@ -175,14 +175,20 @@ suite('Functional Tests', function() {
     suite('DELETE', function() {
       test('Delete a reply with a bad password',done=>{
         chai.request(server).delete('/api/replies/test').send({thread_id:testThread2._id,reply_id:testReply._id, delete_password:'badPassword'}).end((err,res)=>{
+          //should be no error
+          assert.isNull(err);
           assert.equal(res.status,403);
           assert.equal(res.text,'incorrect password');
           done();
         })
       })
+
       test('Delete a reply with the correct password',done=>{
-        chai.request(server).delete('api/replies/test').send({thread_id:testThread2._id,reply_id:testReply._id,delete_password:'testPassword'}).end((err,res)=>{
-          done()
+        chai.request(server).delete('/api/replies/test').send({thread_id:testThread2._id,reply_id:testReply._id, delete_password:'testPassword'}).end((err,res)=>{
+          //should be no error
+          //TODO: Need to finish testing this
+          assert.isNull(err);
+          done();
         })
       })
     });
