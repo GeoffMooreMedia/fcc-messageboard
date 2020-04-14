@@ -156,6 +156,8 @@ module.exports = function (app) {
     repliesCollection.updateOne({_id:new ObjectId(req.body.reply_id)},{$set:{reported:true}}).then(()=>{
       //get the thread document
       threadsCollection.findOne({_id:new ObjectId(req.body.thread_id)}).then(thread=>{
+        //find the index of the reply in the replies array
+        const replyIndex = thread.replies.findIndex(reply=>reply._id===req.body.reply_id);
         
       }).catch(err=>res.status(400).json({error:err}));
 
