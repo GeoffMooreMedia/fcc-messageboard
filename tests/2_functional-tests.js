@@ -180,6 +180,11 @@ suite('Functional Tests', function() {
           done();
         })
       })
+      test('Delete a reply with the correct password',done=>{
+        chai.request(server).delete('api/replies/test').send({thread_id:testThread2._id,reply_id:testReply._id,delete_password:'testPassword'}).end((err,res)=>{
+          done()
+        })
+      })
     });
     
   });

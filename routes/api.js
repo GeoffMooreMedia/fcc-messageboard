@@ -170,8 +170,23 @@ module.exports = function (app) {
   /* Delete a reply */
   app.route('/api/replies/:board').delete((req,res)=>{
     //delete the reply in the database
-    repliesCollection.findOne({_id:req.body.reply_id,delete_password:req.body.delete_password}).then(delt=>{
-
+    repliesCollection.findOne({_id:new ObjectId(req.body.reply_id),delete_password:req.body.delete_password}).then(deleted=>{
+      //if nothing deleted
+      if(!deleted){
+        res.status(403).send('incorrect password');
+      }
+      else{
+        //get the thread document
+        threadsCollection.findOne({_id:new ObjectId(req.body.thread_id)}).then(thread=>{
+          console.log(req.body.thread_id);
+          //find the index of the reply in the replies array
+          const replyIndex = thread.replies.findIndex(reply=>reply._id==req.body.reply_id);
+          //update the reply text
+          thread.replies[replyIndex].text = '[deleted]';
+          //update the thread in the database
+          threadsCollection.updateOne({_id:new ObjectId(req.body.thread_id)},{$set:{replies:thread.replies}}).then(()=>res.status(200).send('success')).catch(err=>res.status(400).json({error:err}));
+        }).catch(err=>res.status(400).json({error:err}));
+      }
     }).catch(err=>res.status(400).json({error:err}));
   })
 };
