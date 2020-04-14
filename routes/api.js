@@ -150,4 +150,12 @@ module.exports = function (app) {
     }).catch(err=>res.status(400).json({error:err}));
   })
 
+  /* Report a reply */
+  app.route('/api/replies/:board').put((req,res)=>{
+    //report the reply in the replies collection
+    repliesCollection.updateOne({_id:new ObjectId(req.body.reply_id)},{$set:{reported:true}}).then(()=>{
+      //report hte reply in the parent thread
+      threadsCollection.updateOne({_id:new ObjectId(req.body.thread_id),})
+    }).catch(err=>res.status(400).json({error:err}))
+  })
 };
