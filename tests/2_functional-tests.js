@@ -177,6 +177,7 @@ suite('Functional Tests', function() {
         chai.request(server).delete('/api/replies/test').send({thread_id:testThread2._id,reply_id:testReply._id, delete_password:'badPassword'}).end((err,res)=>{
           //should be no error
           assert.isNull(err);
+          //should throw 403 unauthorized
           assert.equal(res.status,403);
           assert.equal(res.text,'incorrect password');
           done();
@@ -186,8 +187,10 @@ suite('Functional Tests', function() {
       test('Delete a reply with the correct password',done=>{
         chai.request(server).delete('/api/replies/test').send({thread_id:testThread2._id,reply_id:testReply._id, delete_password:'testPassword'}).end((err,res)=>{
           //should be no error
-          //TODO: Need to finish testing this
           assert.isNull(err);
+          assert.equal(res.status,200);
+          //should respond with success
+          assert.equal(res.text,'success');
           done();
         })
       })

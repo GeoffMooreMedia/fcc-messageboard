@@ -178,7 +178,6 @@ module.exports = function (app) {
       else{
         //get the thread document
         threadsCollection.findOne({_id:new ObjectId(req.body.thread_id)}).then(thread=>{
-          console.log(req.body.thread_id);
           //find the index of the reply in the replies array
           const replyIndex = thread.replies.findIndex(reply=>reply._id==req.body.reply_id);
           //update the reply text
