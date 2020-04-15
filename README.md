@@ -9,3 +9,6 @@ Project Anon Message Board
 4) You will create all of the functional/unit tests in `tests/2_functional-tests.js` and `tests/1_unit-tests.js` but only functional will be tested
 
 
+**Notes on Method**
+
+While this API is developed to meet FreeCodeCamps testing requirements, I don't
