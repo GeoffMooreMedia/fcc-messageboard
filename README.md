@@ -11,4 +11,6 @@ Project Anon Message Board
 
 **Notes on Method**
 
-While this API is developed to meet FreeCodeCamps testing requirements, I don't
+While this API is developed to meet FreeCodeCamp's testing requirements, I don't think this is the best method for this. It is difficult to test the PUT and DELETE calls and data is duplicated in the database. The requirements seem to indicate replies be stored in a replies collection but the same data to be stored in the replies array of the thread. Changes I would make if they wouldn't break the FreeCodeCamp tests would be...
+
+1) Separate collections for boards, threads, and replies. Threads have a board key with the  
